@@ -39,18 +39,17 @@ func AddComment(c *gin.Context) {
 	})
 }
 
-// func GetPhoto(c *gin.Context) {
-// 	var result []map[string]interface{}
+func GetComments(c *gin.Context) {
+	var result []map[string]interface{}
+	// err = db.GetDB().Debug().Create(&req).Error
 
-// 	err := db.GetDB().Debug().Raw("SELECT photos.id, photos.title, photos.caption, photos.photo_url, photos.user_id, photos.created_at, photos.updated_at, users.username, users.email FROM photos INNER JOIN users ON photos.user_id = users.id;").Scan(&result).Error
-// 	fmt.Println(result)
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, result)
-// }
+	err := db.GetDB().Debug().Raw("SELECT comments.id, comments.message, comments.photo_id, comments.updated_at, comments.created_at, users.id, users.email, users.username FROM comments INNER JOIN users ON comments.user_id = users.id;").Scan(&result).Error
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, result)
+}
 
 func UpdateComment(c *gin.Context) {
 	req := models.Comment{}

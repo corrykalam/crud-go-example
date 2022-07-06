@@ -41,6 +41,7 @@ func main() {
 	commentRouter := r.Group("/comments")
 	{
 		commentRouter.Use(middlewares.Validate())
+		commentRouter.GET("/", controllers.GetComments)
 		commentRouter.POST("/", controllers.AddComment)
 		commentRouter.PUT("/:id", controllers.UpdateComment)
 		commentRouter.DELETE("/:id", controllers.DeleteComment)
